@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2: Gathering Your Evidence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1F3A;
+    --navy-light: #16305A;
+    --orange: #C1440E;
+    --orange-light: #E8722E;
+    --cream: #F7F4EF;
+    --paper: #FFFFFF;
+    --ink: #1C2126;
+    --muted: #5B6472;
+    --line: #E1DCD2;
+    --good: #2E6B4F;
+    --good-bg: #E9F5EF;
+    --good-border: #2E6B4F;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.5;
+  }
+  h1, h2, h3, .display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
+  .mono { font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.02em; }
+
+  .masthead { background: var(--navy); color: white; padding: 40px 24px 90px; position: relative; overflow: hidden; }
+  .masthead::after { content:""; position:absolute; right:-60px; top:-60px; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle, rgba(193,68,14,0.35), transparent 70%); }
+  .masthead-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+  .eyebrow { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--orange-light); border:1px solid rgba(232,114,46,0.5); padding:4px 10px; border-radius:999px; margin-bottom:16px; }
+  .masthead h1 { font-size: 34px; margin: 0 0 10px; font-weight:700; }
+  .masthead p { max-width: 640px; color:#C9D2E0; font-size:15px; margin:0; }
+
+  .mobile-pin { display:none; position:sticky; top:0; z-index:50; background:var(--navy); border-bottom:2px solid var(--orange); padding:10px 14px; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+  .mobile-pin-row { display:flex; align-items:center; gap:10px; overflow-x:auto; scrollbar-width:none; }
+  .mobile-pin-row::-webkit-scrollbar { display:none; }
+  .mobile-pin-block { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+  .mobile-pin-tag { font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.06em; color:var(--orange-light); }
+  .mobile-pin-name { font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; color:white; white-space:nowrap; }
+  .mobile-pin-chip { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#E7ECF4; background:rgba(255,255,255,0.1); padding:3px 8px; border-radius:999px; white-space:nowrap; }
+  .mobile-pin-divider { width:1px; height:18px; background:rgba(255,255,255,0.2); flex-shrink:0; }
+  @media (max-width: 860px) { .mobile-pin { display:block; } }
+
+  .rs-grid { display:grid; grid-template-columns: 1fr 300px; gap:28px; align-items:start; margin-top:20px; }
+  @media (max-width: 860px) { .rs-grid { grid-template-columns: 1fr; margin-top:20px; } .side-col { order:-1; } }
+
+  /* Page-by-page worksheet flow */
+  .progress-wrap { margin-bottom: 18px; }
+  .progress-label { font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:8px; }
+  .progress-label b { color:var(--navy); }
+  .progress { display:flex; gap:6px; }
+  .progress-dot { height:6px; flex:1; background:var(--line); border-radius:3px; overflow:hidden; cursor:pointer; }
+  .progress-dot.done { background: var(--orange); }
+  .progress-dot.current { background: var(--navy); }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .nav-row { display:flex; justify-content:space-between; align-items:center; margin-top: 4px; margin-bottom: 30px; }
+  .nav-row .btn:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+
+  .step { background: var(--paper); border:1px solid var(--line); border-radius:14px; padding:28px 28px 30px; margin-bottom:20px; box-shadow:0 1px 2px rgba(11,31,58,0.04); }
+  .step-head { display:flex; align-items:baseline; gap:12px; margin-bottom:6px; }
+  .step-num { font-family:'IBM Plex Mono',monospace; font-size:12px; color:white; background:var(--navy); padding:3px 9px; border-radius:6px; flex-shrink:0; }
+  .step h2 { font-size:19px; margin:0; }
+  .step .academic { color:var(--muted); font-size:14px; font-style:italic; font-weight:400; margin-left:4px; }
+  .step-prompt { color:var(--muted); font-size:14.5px; margin:10px 0 16px; }
+  .sub-block { border-top:1px dashed var(--line); margin-top:22px; padding-top:18px; }
+  .sub-block:first-of-type { border-top:none; margin-top:8px; padding-top:0; }
+  .sub-label { font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--orange); margin-bottom:8px; }
+
+  label { display:block; font-size:13px; font-weight:600; color:var(--navy); margin:16px 0 6px; }
+  input[type=text], input[type=url], textarea, select {
+    width:100%; font-family:'IBM Plex Sans',sans-serif; font-size:14.5px; padding:10px 12px;
+    border:1.5px solid var(--line); border-radius:8px; background:var(--cream); color:var(--ink); resize:vertical;
+  }
+  input[type=text]:focus, input[type=url]:focus, textarea:focus, select:focus { outline:none; border-color:var(--orange); background:white; }
+  textarea { min-height:70px; }
+
+  .toggle-row { display:flex; gap:10px; margin-top:8px; }
+  .toggle-opt { flex:1; }
+  .toggle-opt input[type=radio] { display:none; }
+  .toggle-opt label.toggle-label { display:block; text-align:center; padding:9px 10px; border:1.5px solid var(--line); border-radius:8px; font-size:13.5px; font-weight:600; color:var(--muted); cursor:pointer; margin:0; transition:all 0.12s; }
+  .toggle-opt input[type=radio]:checked + label.toggle-label { border-color:var(--orange); background:#FBEFE6; color:var(--orange); }
+
+  .callout { border-left:4px solid var(--orange); background:#FBEFE6; border-radius:0 10px 10px 0; padding:12px 16px; margin-top:16px; font-size:13.5px; }
+  .callout b { color:var(--orange); }
+  .diagnostic { border-left:4px solid var(--navy); background:#EEF1F6; border-radius:0 10px 10px 0; padding:12px 16px; margin-top:14px; font-size:13.5px; }
+  .diagnostic b { color:var(--navy); }
+  .warn-box { border-left:4px solid #B23A3A; background:#FBEAEA; border-radius:0 10px 10px 0; padding:12px 16px; margin-top:14px; font-size:13.5px; color:#7A2828; }
+  .warn-box b { color:#B23A3A; }
+
+  .rules-list { font-size:14px; margin:10px 0; padding-left:20px; }
+  .rules-list li { margin-bottom:6px; }
+
+  .source-block { border:1.5px solid var(--line); border-radius:12px; padding:18px 18px 6px; margin-top:16px; background:#FCFAF6; }
+  .source-block .source-label { font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--navy); background:var(--cream); border:1px solid var(--line); display:inline-block; padding:3px 10px; border-radius:999px; margin-bottom:4px; }
+
+  .side-col { position:sticky; top:20px; display:flex; flex-direction:column; gap:16px; }
+  .rs-card { background:var(--navy); color:white; border-radius:14px; padding:20px 20px; position:relative; overflow:hidden; }
+  .rs-card.small { padding:16px 18px; }
+  .ribbon { position:absolute; top:18px; right:-42px; background:var(--orange); color:white; font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.07em; padding:3px 40px; transform:rotate(45deg); white-space:nowrap; }
+  .rs-card h3 { font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--orange-light); margin:0 0 12px; font-family:'IBM Plex Mono',monospace; }
+  .card-name { font-size:18px; font-weight:700; margin-bottom:2px; min-height:22px; font-family:'Space Grotesk',sans-serif; }
+  .card-role { font-size:12.5px; color:#AEBBD1; margin-bottom:14px; min-height:16px; }
+  .card-field { margin-bottom:12px; }
+  .card-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--orange-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:3px; }
+  .card-value { font-size:13px; color:#E7ECF4; min-height:16px; }
+  .card-empty { color:#5C6C8A; font-style:italic; }
+  .card-progress { margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15); font-size:11px; color:#8FA0BE; font-family:'IBM Plex Mono',monospace; }
+
+  .btn { display:inline-block; background:var(--orange); color:white; border:none; font-family:'IBM Plex Sans',sans-serif; font-weight:600; font-size:14px; padding:12px 22px; border-radius:8px; cursor:pointer; transition:background 0.15s; }
+  .btn:hover { background:var(--orange-light); }
+  .btn.secondary { background:transparent; color:var(--navy); border:1.5px solid var(--line); }
+  .btn.secondary:hover { background:var(--cream); border-color:var(--navy); }
+  .add-wrap { margin:16px 0 6px; }
+  .add-wrap .btn.secondary:disabled { opacity:0.5; cursor:not-allowed; }
+  .min-status { font-size:13px; color:#7A2828; margin:10px 0 0; }
+  .min-status.ok { color:#2E7D4F; }
+  .source-block .remove-src { float:right; background:none; border:none; color:#B23A3A; font-size:12.5px; text-decoration:underline; cursor:pointer; font-family:'IBM Plex Sans',sans-serif; }
+
+  .copy-row { display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+  .footer-note { text-align:center; color:var(--muted); font-size:12.5px; margin:40px auto 0; max-width:600px; }
+
+  @media (max-width: 860px) { .side-col { position:static; top:auto; } }
+  @media (max-width: 480px) { input[type=text]::placeholder, input[type=url]::placeholder { font-size:12.5px; } }
+
+  .page-wrap { max-width: 1120px; margin: 28px auto 80px; padding: 0 24px; }
+.mynotes { border:1.5px solid var(--navy); background:#EEF3FB; border-radius:8px; padding:9px 13px; margin:0 0 16px; font-size:13.5px; color:var(--ink); }
+.mynotes b { color:var(--navy); }
+  .savebar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-bottom:14px; }
+  .savebar .btn { padding:8px 16px; font-size:13px; }
+  .savebar span { font-size:12.5px; color:var(--muted); flex:1 1 220px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <span class="eyebrow">TGE 1150 &middot; Research Proposal &middot; Week 2</span>
+    <h1>Gathering Your Evidence</h1>
+    <p>Build your theoretical framework, then go find real, verifiable sources. Fill this out as you actually do the research, not after.</p>
+  </div>
+</div>
+
+<div class="mobile-pin" id="mobile-pin">
+  <div class="mobile-pin-row">
+    <div class="mobile-pin-block">
+      <span class="mobile-pin-tag">Framework</span>
+      <span class="mobile-pin-name" id="pin-fw-name">Not named yet</span>
+    </div>
+    <div class="mobile-pin-divider"></div>
+    <div class="mobile-pin-block">
+      <span class="mobile-pin-chip" id="pin-sources">0 / 6 sources</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="savebar" id="savebar">
+    <button class="btn secondary" onclick="generateJSON()">Save File</button>
+    <button class="btn secondary" onclick="document.getElementById('json-upload').click()">Upload Saved File</button>
+    <input type="file" id="json-upload" accept=".json" style="display:none;" onchange="loadJSON(event)">
+    <span>Need to stop? Click Save File, then upload that file here when you come back. This is not for Canvas.</span>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">Page <b id="progress-current">1</b> of <span id="progress-total">7</span> &middot; <span id="progress-title">Read First</span></div>
+    <div class="progress" id="progress-dots"></div>
+  </div>
+
+  <div class="rs-grid">
+    <div class="main-col">
+
+      <!-- SCREEN 0: READ FIRST -->
+      <div class="screen active" id="screen-0">
+        <div class="step" style="border-left: 5px solid var(--orange);">
+          <div class="step-head"><span class="step-num" style="background:var(--orange);">READ FIRST</span><h2>What This Worksheet Is For</h2></div>
+      <div class="mynotes"><b>Your notes:</b> Section A, "Evidence turns a complaint into a case," in your Week 2 Interactive Reading PDF (the part that says "Worksheet notes"). Or find the same section in the Reading Only. You wrote your ask, your complaint, and your case. Keep them handy. Step 1 is where your ask and your problem go on the page.</div>
+          <p class="step-prompt">This is where you build the case, not where you get handed one. Nothing in here gets generated for you. You do the thinking, you do the research, you fill in what you actually found.</p>
+          <p class="step-prompt">There are two big jobs in this worksheet. First, you turn the situation from Week 1 into a Theoretical Framework, a named pattern that explains why this problem is real and ongoing, not a one-time fluke. Second, you go find real evidence in three rounds: proof this is a recognized problem, hard numbers comparing your options, and real voices from people who've actually used the equipment. The numbers are quantitative evidence and the voices are qualitative evidence, and a strong case uses both. Every source you use needs a real, working link. No made-up sources, no vendor pages pretending to be independent reviews. This week you find and save your sources. Week 3 is where you dig into them.</p>
+          <p class="step-prompt">Work through this in order. Each screen explains why it matters before it asks you anything, so read the explanation, then answer for real. Use the Next and Back buttons to move through, your answers stay filled in as you go. If you need to stop and come back later, click Save File at the top of any page, then use Upload Saved File when you return.</p>
+        <div class="callout"><b>Detail matters.</b> What you write here is what you bring into Week 3, where an AI tool helps you write your proposal sections from it. The AI can only work with what you give it. Short, vague answers lead to weak writing. Specific answers, with names, numbers, and real links, lead to a strong proposal. Write it like you are explaining it to your supervisor.</div>
+        </div>
+        <div class="nav-row">
+          <span></span>
+          <button class="btn" onclick="goTo(1)">Start &rarr;</button>
+        </div>
+      </div>
+
+      <!-- SCREEN 1: TARGET -->
+      <div class="screen" id="screen-1">
+      <div class="step">
+        <div class="step-head"><span class="step-num">STEP 1</span><h2>Lock In Your Target</h2></div>
+      <div class="mynotes"><b>Your notes:</b> Section B, "Lock in your target," in your Week 2 Interactive Reading PDF (the part that says "Worksheet notes"). Or find the same section in the Reading Only. Your ask and your problem come from your Week 1 Profile, Step 3 (the problem box and the ask box). Your problem and its incident are the start of your case. The proof you listed in your Section A notes is what the rest of this worksheet goes out to find.</div>
+        <p class="step-prompt">Everything below builds on the problem and the ask you already nailed down in Week 1. Pull those two pieces over here so this worksheet has something to build on. <b>Be specific.</b> Name the exact item, the price, and the number from your incident.</p>
+
+        <label for="target-ask">Your one-sentence ask, from Week 1</label>
+        <textarea id="target-ask" style="min-height:60px;" placeholder="e.g. Ray, please approve a second two-post alignment rack for the shop, about $4,000."></textarea>
+
+        <label for="target-problem">Your problem, with the incident that proves it, from Week 1 (real if you work in your industry, realistic if you do not)</label>
+        <textarea id="target-problem" placeholder="e.g. Winter tire season doubles our alignment work, and our one 15-year-old rack takes about 50 minutes per alignment. Last winter we were backed up almost every Saturday from October to January."></textarea>
+
+        <div class="callout"><b>Why this step exists:</b> Everything you gather from here forward has to actually serve this specific ask. If you can't see how a source connects back to what's written here, it doesn't belong in your research.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn secondary" onclick="goTo(0)">&larr; Back</button>
+        <button class="btn" onclick="goTo(2)">Next &rarr;</button>
+      </div>
+      </div>
+
+      <!-- SCREEN 2: THEORETICAL FRAMEWORK -->
+      <div class="screen" id="screen-2">
+      <div class="step">
+        <div class="step-head"><span class="step-num">STEP 2</span><h2>Build Your Theoretical Framework</h2></div>
+      <div class="mynotes"><b>Your notes:</b> Sections C and D in your Week 2 Interactive Reading PDF. Section C, "Find the pattern yourself," is your plan for the pattern questions. Section D, "Name the concept," is your plan for naming the concept. Both are also in the Reading Only.</div>
+        <p class="step-prompt">A theoretical framework is the named pattern behind your problem. Right now you have a list of individual complaints. Without a named pattern connecting them, a supervisor watching the budget can wave each one off as a bad day or a rare fluke. The framework turns isolated incidents into a single, provable, ongoing problem. Everything you gather later exists to prove this specific pattern is real. If you need a reminder of what a framework is and why it matters, reread the Quick Concept page in your Interactive Reading. <b>Use full sentences and specific details, like numbers, amounts, and examples.</b> A few words will not be enough for Week 3.</p>
+
+        <div class="sub-block">
+          <div class="sub-label">Part 1: Find the Pattern Yourself</div>
+          <label for="fw-work-change">What is actually changing on the work side?</label>
+          <p class="step-prompt" style="margin-top:-4px;">Think about real changes in the work itself, like job length, volume, or materials, not the symptom you're seeing.</p>
+          <textarea id="fw-work-change" placeholder="e.g. Winter tire season starts in October and our alignment work doubles."></textarea>
+
+          <label for="fw-equip-same">What has stayed exactly the same on the equipment side?</label>
+          <textarea id="fw-equip-same" placeholder="e.g. We still have one 15-year-old rack. It takes about 50 minutes per alignment and is booked about six hours a day."></textarea>
+
+          <label for="fw-timing">Did this build up over time, or hit all at once? How do you know?</label>
+          <p class="step-prompt" style="margin-top:-4px;">Point to a specific moment, like when people started noticing it or when it got flagged, not a vague sense that it got worse.</p>
+          <textarea id="fw-timing" placeholder="e.g. It builds every season. Last year we were backed up almost every Saturday from October to January."></textarea>
+
+          <label for="fw-inevitable">If nothing changes, does this resolve on its own, or does it keep happening? Why?</label>
+          <textarea id="fw-inevitable" placeholder="e.g. No. The rack does not gain capacity between busy weeks, so the next busy week overflows the same way."></textarea>
+        </div>
+
+        <div class="sub-block">
+          <div class="sub-label">Part 2: Name the Concept</div>
+          <p class="step-prompt" style="margin-top:0;">Now go find out what this pattern is actually called. This named pattern becomes the Theoretical Framework section of your research proposal. Search for the real academic or professional concept that matches what you just described, in a textbook, a course reading, a credible article, or a field you can name. You are naming a real concept, not inventing one.</p>
+
+          <label for="fw-name">The name of the concept or pattern you found</label>
+          <input type="text" id="fw-name" placeholder="e.g. Theory of Constraints">
+
+          <label for="fw-source">Where this concept comes from</label>
+          <p class="step-prompt" style="margin-top:-4px;">Name the researcher, field, textbook, or course material it traces back to. If you found it online, paste the link. Pick a source your supervisor would trust. Make sure you can explain what the source says and why you trust who wrote it. Not sure where to start? Follow the 7-step "How to find your framework" roadmap in Section D, "Name the concept," of your Interactive Reading or Reading Only. Quick links: <a href="https://isu.libguides.com/informationliteracy/findarticles" target="_blank" rel="noopener">ISU Library: Find Articles</a> | <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>.</p>
+          <input type="text" id="fw-source" placeholder="e.g. Eliyahu Goldratt's book The Goal, or a link to where you found it">
+
+          <label for="fw-why">Why this concept fits your case</label>
+          <textarea id="fw-why" placeholder="e.g. Our one rack is the slowest step. Every job has to pass through it, so the whole shop can only finish as many alignments as the rack allows."></textarea>
+
+          <label for="fw-alt">What's another way someone could read these same facts, and why did you rule it out?</label>
+          <p class="step-prompt" style="margin-top:-4px;">Name at least one real alternative explanation you considered, and say why your concept fits better.</p>
+          <textarea id="fw-alt" placeholder="e.g. You could call this a staffing problem, but our techs are already standing around waiting for the rack, so more people would not fix it."></textarea>
+
+          <label for="fw-disprove">What would someone have to show you to prove this framework doesn't actually apply?</label>
+          <textarea id="fw-disprove" placeholder="e.g. If the rack sat empty for hours each day and jobs still stacked up, the rack would not be the real limit."></textarea>
+        </div>
+
+        <div class="callout"><b>Coach's Corner:</b> If you can't name a real researcher, field, or source this traces back to, you haven't found the real concept yet, you've made one up. Keep looking.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn secondary" onclick="goTo(1)">&larr; Back</button>
+        <button class="btn" onclick="goTo(3)">Next &rarr;</button>
+      </div>
+      </div>
+
+      <!-- SCREEN 3: ROUND ONE -->
+      <div class="screen" id="screen-3">
+      <div class="step">
+        <div class="step-head"><span class="step-num">STEP 3</span><h2>Round One <span class="academic">(Documenting the Problem)</span></h2></div>
+      <div class="mynotes"><b>Your notes:</b> Section E, "Round One: finding the problem," in your Week 2 Interactive Reading PDF (the part that says "Worksheet notes"). Or find the same section in the Reading Only. Use it as your plan for this step. Not sure where to start? Follow the "How to find your sources" roadmap in Section E. Quick links: <a href="https://isu.libguides.com/informationliteracy/findarticles" target="_blank" rel="noopener">ISU Library: Find Articles</a> | <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>.</div>
+        <p class="step-prompt">The goal of this round is to prove your problem is a recognized issue in your industry, not something you're imagining. You're looking for standards, regulations, or industry documentation that back up the pattern you named in Step 2. This turns your request from a shop complaint into a documented necessity. This week you only find and save the sources. In Week 3 you will dig into what each one says. <b>Fill in every box for every source.</b> The title, who wrote it, and where you found it are what Week 3 works from.</p>
+
+        <div class="source-block">
+          <span class="source-label">Source 1</span>
+          <label for="r1-s1-title">Title / publisher</label>
+          <input type="text" id="r1-s1-title" placeholder="e.g. Tire Shop Spring Preparation: Gear Up for the Busy Season (Tire Industry Association, Autosphere)">
+          <label for="r1-s1-link">Link</label>
+          <input type="url" id="r1-s1-link" placeholder="https://...">
+          <label for="r1-s1-found">Where you found it</label>
+          <textarea id="r1-s1-found" placeholder="e.g. Searched 'planning for seasonal demand tire shops' and followed a result to a trade magazine article."></textarea>
+          <label for="r1-s1-kind">What kind of source it is</label>
+          <textarea id="r1-s1-kind" placeholder="e.g. Trade association article, industry report, regulation, or professional training material."></textarea>
+        </div>
+
+        <div class="source-block">
+          <span class="source-label">Source 2</span>
+          <label for="r1-s2-title">Title / publisher</label>
+          <input type="text" id="r1-s2-title" placeholder="">
+          <label for="r1-s2-link">Link</label>
+          <input type="url" id="r1-s2-link" placeholder="https://...">
+          <label for="r1-s2-found">Where you found it</label>
+          <textarea id="r1-s2-found" placeholder=""></textarea>
+          <label for="r1-s2-kind">What kind of source it is</label>
+          <textarea id="r1-s2-kind" placeholder=""></textarea>
+        </div>
+
+        <div id="r1-extra"></div>
+        <div class="add-wrap"><button type="button" class="btn secondary" id="r1-add" onclick="addSource('r1')">+ Want to add more sources? Click here to add another.</button><p class="min-status" id="r1-min"></p></div>
+
+        <label for="r1-other">What else did you look at and rule out, and why did these win?</label>
+        <p class="step-prompt" style="margin-top:-4px;">Name at least one other source you considered. Real comparison, not just the first two results you clicked.</p>
+        <textarea id="r1-other" placeholder="e.g. I also found a tire shop blog post about busy seasons, but I skipped it because no person was named and I could not tell what the writer does in the trade."></textarea>
+
+        <div class="callout"><b>Coach's Corner:</b> Regulatory pages, standards bodies, trade association guidance, industry reports, and professional training materials are strong here. A page where no person is named, or where you cannot find out what the writer does in the trade, is weak.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn secondary" onclick="goTo(2)">&larr; Back</button>
+        <button class="btn" id="next-3" onclick="goTo(4)">Next &rarr;</button>
+      </div>
+      </div>
+
+      <!-- SCREEN 4: ROUND TWO -->
+      <div class="screen" id="screen-4">
+      <div class="step">
+        <div class="step-head"><span class="step-num">STEP 4</span><h2>Round Two <span class="academic">(Quantitative Data)</span></h2></div>
+      <div class="mynotes"><b>Your notes:</b> Section F, "Round Two: finding the numbers," in your Week 2 Interactive Reading PDF (the part that says "Worksheet notes"). Or find the same section in the Reading Only. Use it as your plan for this step. Section F has "Where to look" and "Rules for good sources."</div>
+        <p class="step-prompt">Quantitative data means numbers: cost, specs, capacity, speed, warranty length, whatever is actually measurable about the equipment you're comparing. This round is strictly numbers and specs. You are finding sources that have the numbers, not pulling the numbers out yet. That happens in Week 3. Save opinions and reviews for Round Three. A video that shows the numbers, like a timed job or a spec walkthrough, can be a source too. You are comparing two different brands of the same type of product. Each one gets its own source this week. If your source is the manufacturer's own spec sheet, try to find an independent test or review of the same product too, and name it in "What else did you find." <b>Fill in every box for every source.</b> The title, who wrote it, and where you found it are what Week 3 works from.</p>
+
+        <div class="source-block">
+          <span class="source-label">Option 1</span>
+          <label for="r2-s1-title">Product / brand / model</label>
+          <input type="text" id="r2-s1-title" placeholder="e.g. Brand A two-post alignment rack">
+          <label for="r2-s1-link">Link</label>
+          <input type="url" id="r2-s1-link" placeholder="https://...">
+          <label for="r2-s1-found">Where you found it</label>
+          <textarea id="r2-s1-found" placeholder="e.g. Searched 'two-post alignment rack specs' and opened the manufacturer's product page."></textarea>
+          <label for="r2-s1-kind">What kind of source it is</label>
+          <textarea id="r2-s1-kind" placeholder="e.g. Manufacturer spec sheet, independent test, or retailer listing."></textarea>
+        </div>
+
+        <div class="source-block">
+          <span class="source-label">Option 2</span>
+          <label for="r2-s2-title">Product / brand / model</label>
+          <input type="text" id="r2-s2-title" placeholder="">
+          <label for="r2-s2-link">Link</label>
+          <input type="url" id="r2-s2-link" placeholder="https://...">
+          <label for="r2-s2-found">Where you found it</label>
+          <textarea id="r2-s2-found" placeholder=""></textarea>
+          <label for="r2-s2-kind">What kind of source it is</label>
+          <textarea id="r2-s2-kind" placeholder=""></textarea>
+        </div>
+
+        <div id="r2-extra"></div>
+        <div class="add-wrap"><button type="button" class="btn secondary" id="r2-add" onclick="addSource('r2')">+ Want to add more options? Click here to add another.</button><p class="min-status" id="r2-min"></p></div>
+
+        <label for="r2-other">What else did you find, and why did these win?</label>
+        <textarea id="r2-other" placeholder=""></textarea>
+
+        <div class="warn-box"><b>Stay strictly quantitative:</b> Look for sources with measurable numbers. Reviews and opinions belong in Round Three, not here.</div>
+        <div class="callout"><b>Coach's Corner:</b> A seller's page or spec sheet is a good source for what a product does and what it costs, but those are the seller's own numbers. It cannot be your only source. Note what kind of source it is, and look for an independent test to check the numbers.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn secondary" onclick="goTo(3)">&larr; Back</button>
+        <button class="btn" id="next-4" onclick="goTo(5)">Next &rarr;</button>
+      </div>
+      </div>
+
+      <!-- SCREEN 5: ROUND THREE -->
+      <div class="screen" id="screen-5">
+      <div class="step">
+        <div class="step-head"><span class="step-num">STEP 5</span><h2>Round Three <span class="academic">(Qualitative Data)</span></h2></div>
+      <div class="mynotes"><b>Your notes:</b> Section G, "Round Three: finding real voices," in your Week 2 Interactive Reading PDF (the part that says "Worksheet notes"). Or find the same section in the Reading Only. Use it as your plan for this step. Section G has "Where to look" and "Ask who is speaking."</div>
+        <p class="step-prompt">Qualitative data means real experience: reviews, forum posts, interviews, videos from people in your trade, or accounts from people who have actually worked with this kind of equipment. This round needs independent voices, not marketing copy. A glowing product description on the seller's own site does not count as a review. You are finding the voices now. In Week 3 you will dig into what they said. For a video, save the link to the video, not the channel, and note the speaker's name and role. <b>Fill in every box for every source.</b> The title, who wrote it, and where you found it are what Week 3 works from.</p>
+
+        <div class="source-block">
+          <span class="source-label">Source 1</span>
+          <label for="r3-s1-title">Source name or person</label>
+          <input type="text" id="r3-s1-title" placeholder="e.g. Trade forum post from a shop owner who added a second rack">
+          <label for="r3-s1-link">Link</label>
+          <input type="url" id="r3-s1-link" placeholder="https://...">
+          <label for="r3-s1-found">How you found it</label>
+          <textarea id="r3-s1-found" placeholder="e.g. Searched a trade forum for alignment rack reviews."></textarea>
+          <label for="r3-s1-kind">Who is speaking</label>
+          <textarea id="r3-s1-kind" placeholder="e.g. A service manager with ten years of experience, or an anonymous account with one post."></textarea>
+        </div>
+
+        <div class="source-block">
+          <span class="source-label">Source 2</span>
+          <label for="r3-s2-title">Source name or person</label>
+          <input type="text" id="r3-s2-title" placeholder="">
+          <label for="r3-s2-link">Link</label>
+          <input type="url" id="r3-s2-link" placeholder="https://...">
+          <label for="r3-s2-found">How you found it</label>
+          <textarea id="r3-s2-found" placeholder=""></textarea>
+          <label for="r3-s2-kind">Who is speaking</label>
+          <textarea id="r3-s2-kind" placeholder=""></textarea>
+        </div>
+
+        <div id="r3-extra"></div>
+        <div class="add-wrap"><button type="button" class="btn secondary" id="r3-add" onclick="addSource('r3')">+ Want to add more sources? Click here to add another.</button><p class="min-status" id="r3-min"></p></div>
+
+        <label for="r3-other">What else did you find, and why did these win?</label>
+        <p class="step-prompt" style="margin-top:-4px;">If you found a vendor page pretending to be a review, name it here and explain why you didn't use it.</p>
+        <textarea id="r3-other" placeholder=""></textarea>
+
+        <div class="callout"><b>Coach's Corner:</b> Independent forums, verified buyer reviews, and real interviews carry weight in a live defense. A source that turns out to be the manufacturer talking about itself will not.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn secondary" onclick="goTo(4)">&larr; Back</button>
+        <button class="btn" id="next-5" onclick="goTo(6)">Next &rarr;</button>
+      </div>
+      </div>
+
+      <!-- SCREEN 6: SUMMARY -->
+      <div class="screen" id="screen-6">
+      <div class="step">
+        <div class="step-head"><span class="step-num">FINAL</span><h2>Your Summary</h2></div>
+      <div class="mynotes"><b>Your reading:</b> Section H, "What you will do on the worksheet," in your Week 2 Interactive Reading or the Reading Only. It lists the seven sources you should have and the rules for good links.</div>
+        <p class="step-prompt">When everything above is filled in for real, generate your PDF and upload it to Canvas. This is your source list. Keep your PDF. In Week 3 you will copy your ask, problem, framework, and sources from it, so make sure every link is real and works before you export.</p>
+        <div class="warn-box"><b>Be careful when you copy and paste links into Week 3.</b> Paste the whole link, from https to the very end. Then click it to make sure it still opens the right page.</div>
+        <div class="callout"><b>Before you export,</b> read back through your answers. If a box is only a few words, add the detail now.</div>
+        <div class="copy-row">
+          <button class="btn" style="background:var(--navy);" onclick="generatePDF()">Download PDF for Canvas</button>
+        </div>
+        <p style="font-size:12.5px; color:var(--muted); margin-top:10px;">The PDF button opens a print-ready version of your worksheet in a new tab and triggers your browser's print dialog. Choose "Save as PDF" as the destination, then upload that file to the Week 2 assignment in Canvas. You can copy from it in Week 3.</p>
+              </div>
+      <div class="nav-row">
+        <button class="btn secondary" onclick="goTo(5)">&larr; Back</button>
+        <span></span>
+      </div>
+      </div>
+
+    </div>
+
+    <div class="side-col">
+
+      <div class="rs-card small">
+        <div class="ribbon">TARGET</div>
+        <h3>Your Ask</h3>
+        <div class="card-value" id="c-ask"><span class="card-empty">not yet pasted</span></div>
+      </div>
+
+      <div class="rs-card">
+        <div class="ribbon">FRAMEWORK</div>
+        <h3>Theoretical Framework</h3>
+        <div class="card-name" id="fw-name-card">&mdash;</div>
+        <div class="card-role" id="fw-source-card"></div>
+        <div class="card-field">
+          <div class="card-label">Why It Fits</div>
+          <div class="card-value" id="fw-why-card"><span class="card-empty">not yet written</span></div>
+        </div>
+        <div class="card-progress" id="fw-progress">0 / 5 fields complete</div>
+      </div>
+
+      <div class="rs-card small">
+        <div class="ribbon">SOURCES</div>
+        <h3>Evidence Tracker</h3>
+        <div class="card-field">
+          <div class="card-label">Round 1 &middot; Problem</div>
+          <div class="card-value" id="r1-count">0 / 2 sources</div>
+        </div>
+        <div class="card-field">
+          <div class="card-label">Round 2 &middot; Quantitative</div>
+          <div class="card-value" id="r2-count">0 / 2 sources</div>
+        </div>
+        <div class="card-field">
+          <div class="card-label">Round 3 &middot; Qualitative</div>
+          <div class="card-value" id="r3-count">0 / 2 sources</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="footer-note">TGE 1150 &middot; College of Technology, Idaho State University &middot; Instructor: Phil Jones</p>
+
+</div>
+
+<script>
+  function val(id) { return document.getElementById(id).value.trim(); }
+  function truncate(str, n) { return str.length > n ? str.slice(0, n) + '...' : str; }
+  function toggleVal(name) {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    return checked ? checked.value : null;
+  }
+
+  // ---- Add-more-sources support (Rounds 1-3) ----
+  const ENFORCE_MIN = true; // Next is blocked until two sources are complete on each round page
+  const MAX_SOURCES = 15;
+  const ROUND_CFG = {
+    r1: { label: 'Source', title: 'Title / publisher', link: 'Link', found: 'Where you found it', kind: 'What kind of source it is', pdfTitle: 'Title / Publisher', pdfFound: 'Where I Found It', pdfKind: 'Kind of Source' },
+    r2: { label: 'Option', title: 'Product / brand / model', link: 'Link', found: 'Where you found it', kind: 'What kind of source it is', pdfTitle: 'Product / Brand / Model', pdfFound: 'Where I Found It', pdfKind: 'Kind of Source' },
+    r3: { label: 'Source', title: 'Source name or person', link: 'Link', found: 'How you found it', kind: 'Who is speaking', pdfTitle: 'Source Name or Person', pdfFound: 'How I Found It', pdfKind: 'Who Is Speaking' }
+  };
+  function sourceTotal(r) { let n = 2; while (document.getElementById(r + '-s' + (n + 1) + '-title')) n++; return n; }
+  function extraIds() {
+    const out = [];
+    ['r1','r2','r3'].forEach(r => { const t = sourceTotal(r); for (let i = 3; i <= t; i++) ['title','link','found','kind'].forEach(k => out.push(r + '-s' + i + '-' + k)); });
+    return out;
+  }
+  function addSource(r) {
+    const n = sourceTotal(r) + 1;
+    if (n > MAX_SOURCES) return;
+    const c = ROUND_CFG[r];
+    const div = document.createElement('div');
+    div.className = 'source-block extra';
+    div.innerHTML = '<span class="source-label"></span><button type="button" class="remove-src" onclick="removeSource(this)">Remove</button>' +
+      '<label data-k="title"></label><input type="text" data-k="title">' +
+      '<label data-k="link"></label><input type="url" data-k="link" placeholder="https://...">' +
+      '<label data-k="found"></label><textarea data-k="found"></textarea>' +
+      '<label data-k="kind"></label><textarea data-k="kind"></textarea>';
+    document.getElementById(r + '-extra').appendChild(div);
+    div.querySelectorAll('input,textarea').forEach(el => el.addEventListener('input', () => { updateCards(); updateSummary(); }));
+    renumberSources(r);
+    updateCards();
+    return div;
+  }
+  function removeSource(btn) {
+    const block = btn.closest('.source-block');
+    const r = block.parentElement.id.replace('-extra', '');
+    block.remove();
+    renumberSources(r);
+    updateCards();
+  }
+  function renumberSources(r) {
+    const c = ROUND_CFG[r];
+    document.getElementById(r + '-extra').querySelectorAll('.source-block').forEach((b, idx) => {
+      const n = idx + 3;
+      b.querySelector('.source-label').textContent = c.label + ' ' + n;
+      b.querySelectorAll('[data-k]').forEach(el => {
+        const k = el.getAttribute('data-k');
+        const id = r + '-s' + n + '-' + k;
+        if (el.tagName === 'LABEL') { el.setAttribute('for', id); el.textContent = c[k]; }
+        else { el.id = id; }
+      });
+    });
+  }
+  function updateSourceUI() {
+    ['r1','r2','r3'].forEach((r, k) => {
+      const n = sourceCount(r), met = n >= 2;
+      const m = document.getElementById(r + '-min');
+      m.className = 'min-status' + (met ? ' ok' : '');
+      m.textContent = met
+        ? 'Minimum met: ' + n + ' complete. Add more if you found more.'
+        : 'You need at least two complete sources on this page. A source is complete when it has a title and a link. (' + n + ' of 2 done)';
+      const nx = document.getElementById('next-' + (k + 3));
+      if (nx) nx.disabled = ENFORCE_MIN && !met;
+      const ab = document.getElementById(r + '-add');
+      ab.disabled = sourceTotal(r) >= MAX_SOURCES;
+    });
+  }
+  function pdfField(label, html) { return '<div class="field"><div class="label">' + label + '</div><div class="value">' + html + '</div></div>'; }
+  function sourceEmpty(p) { return !val(p + 'title') && !val(p + 'link') && !val(p + 'found') && !val(p + 'kind'); }
+  function pdfSources(r) {
+    const c = ROUND_CFG[r]; let h = '';
+    for (let i = 1; i <= sourceTotal(r); i++) {
+      const p = r + '-s' + i + '-';
+      if (i > 2 && sourceEmpty(p)) continue;
+      h += '<h3>' + c.label + ' ' + i + '</h3>' +
+        pdfField(c.pdfTitle, filled(val(p + 'title'), 'Not completed')) +
+        pdfField('Link', filledLinks(val(p + 'link'), 'Not completed')) +
+        pdfField(c.pdfFound, filled(val(p + 'found'), 'Not completed')) +
+        pdfField(c.pdfKind, filled(val(p + 'kind'), 'Not completed'));
+    }
+    return h;
+  }
+
+  const allFieldIds = [
+    'target-ask','target-problem',
+    'fw-work-change','fw-equip-same','fw-timing','fw-inevitable','fw-name','fw-source','fw-why','fw-alt','fw-disprove',
+    'r1-s1-title','r1-s1-link','r1-s1-found','r1-s1-kind','r1-s2-title','r1-s2-link','r1-s2-found','r1-s2-kind','r1-other',
+    'r2-s1-title','r2-s1-link','r2-s1-found','r2-s1-kind','r2-s2-title','r2-s2-link','r2-s2-found','r2-s2-kind','r2-other',
+    'r3-s1-title','r3-s1-link','r3-s1-found','r3-s1-kind','r3-s2-title','r3-s2-link','r3-s2-found','r3-s2-kind','r3-other'
+  ];
+  allFieldIds.forEach(id => {
+    document.getElementById(id).addEventListener('input', () => { updateCards(); updateSummary(); });
+  });
+
+  function sourceCount(prefix) {
+    let n = 0;
+    for (let i = 1; i <= sourceTotal(prefix); i++) {
+      if (val(prefix + '-s' + i + '-title') && val(prefix + '-s' + i + '-link')) n++;
+    }
+    return n;
+  }
+
+  function updateCards() {
+    document.getElementById('c-ask').innerHTML = val('target-ask') ? truncate(val('target-ask'), 90) : '<span class="card-empty">not yet pasted</span>';
+
+    const fwName = val('fw-name');
+    document.getElementById('fw-name-card').textContent = fwName || '-';
+    document.getElementById('fw-source-card').textContent = val('fw-source') ? truncate(val('fw-source'), 45) : '';
+    document.getElementById('fw-why-card').innerHTML = val('fw-why') ? truncate(val('fw-why'), 80) : '<span class="card-empty">not yet written</span>';
+
+    let fwComplete = 0;
+    ['fw-name','fw-source','fw-why','fw-alt','fw-disprove'].forEach(id => { if (val(id)) fwComplete++; });
+    document.getElementById('fw-progress').textContent = fwComplete + ' / 5 fields complete';
+
+    const r1n = sourceCount('r1');
+    const r2n = sourceCount('r2');
+    const r3n = sourceCount('r3');
+    document.getElementById('r1-count').textContent = r1n + (r1n === 1 ? ' source' : ' sources') + ' (2 minimum)';
+    document.getElementById('r2-count').textContent = r2n + (r2n === 1 ? ' source' : ' sources') + ' (2 minimum)';
+    document.getElementById('r3-count').textContent = r3n + (r3n === 1 ? ' source' : ' sources') + ' (2 minimum)';
+
+    document.getElementById('pin-fw-name').textContent = fwName ? truncate(fwName, 22) : 'Not named yet';
+    document.getElementById('pin-sources').textContent = (r1n + r2n + r3n) + ' sources (6 minimum)';
+    updateSourceUI();
+  }
+
+  function esc(str) { return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function filled(str, placeholder) { return str ? esc(str) : `<span class="empty">${placeholder}</span>`; }
+  function filledLinks(str, placeholder) {
+    if (!str) return `<span class="empty">${placeholder}</span>`;
+    return esc(str).replace(/(https?:\/\/|www\.)[^\s<>"]+/gi, m => {
+      const tail = (m.match(/[.,;:!?)\]]+$/) || [''])[0];
+      const u = tail ? m.slice(0, m.length - tail.length) : m;
+      const href = /^www\./i.test(u) ? 'https://' + u : u;
+      return '<a href="' + href + '">' + u + '</a>' + tail;
+    });
+  }
+
+  function updateSummary() {
+    // reserved for a future on-page plaintext summary panel; kept for parity with export functions
+  }
+
+  function generatePDF() {
+    const w = window.open('', '_blank');
+    const doc = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Week 2: Gathering Your Evidence</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { margin: 0.75in; }
+  body { font-family: 'IBM Plex Sans', sans-serif; color: #1C2126; font-size: 12.5px; line-height: 1.5; max-width: 780px; margin: 0 auto; padding: 20px; }
+  h1 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; margin-bottom: 2px; color: #0B1F3A; }
+  .subhead { color: #5B6472; font-size: 12px; margin-bottom: 22px; }
+  h2 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: #0B1F3A; background: #EEF1F6; padding: 6px 10px; border-radius: 5px; margin: 22px 0 8px; page-break-after: avoid; }
+  h3 { font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; color: #C1440E; margin: 16px 0 4px; }
+  .field { margin-bottom: 10px; page-break-inside: avoid; }
+  .label { font-weight: 600; color: #0B1F3A; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px; }
+  .value { white-space: pre-wrap; }
+  .empty { color: #A3ACB8; font-style: italic; }
+  .footer { margin-top: 30px; font-size: 10.5px; color: #8A93A0; border-top: 1px solid #E1DCD2; padding-top: 10px; }
+  @media print { .no-print { display: none; } }
+  .no-print { text-align: center; margin-bottom: 20px; }
+  .no-print button { font-family: 'IBM Plex Sans', sans-serif; background: #C1440E; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+</style></head>
+<body>
+  <div class="no-print"><button onclick="window.print()">Print / Save as PDF</button></div>
+  <h1>Week 2: Gathering Your Evidence</h1>
+  <div class="subhead">TGE 1150 &middot; Research Proposal, Week 2</div>
+
+  <h2>Your Target</h2>
+  <div class="field"><div class="label">The Ask (from Week 1)</div><div class="value">${filled(val('target-ask'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">The Problem (from Week 1)</div><div class="value">${filled(val('target-problem'), 'Not completed')}</div></div>
+
+  <h2>Theoretical Framework</h2>
+  <div class="field"><div class="label">What Changed on the Work Side</div><div class="value">${filled(val('fw-work-change'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">What Stayed the Same on the Equipment Side</div><div class="value">${filled(val('fw-equip-same'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Timing / Buildup</div><div class="value">${filled(val('fw-timing'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Inevitability</div><div class="value">${filled(val('fw-inevitable'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Framework Name</div><div class="value">${filled(val('fw-name'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Source of This Concept</div><div class="value">${filledLinks(val('fw-source'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Why It Fits</div><div class="value">${filled(val('fw-why'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Alternative Reading, and Why It Was Ruled Out</div><div class="value">${filled(val('fw-alt'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">What Would Disprove This</div><div class="value">${filled(val('fw-disprove'), 'Not completed')}</div></div>
+
+  <h2>Round One: Documenting the Problem</h2>
+  ${pdfSources('r1')}
+  <div class="field"><div class="label">Other Sources Considered / Why These Won</div><div class="value">${filled(val('r1-other'), 'Not completed')}</div></div>
+
+  <h2>Round Two: Quantitative Data</h2>
+  ${pdfSources('r2')}
+  <div class="field"><div class="label">Other Sources Considered / Why These Won</div><div class="value">${filled(val('r2-other'), 'Not completed')}</div></div>
+
+  <h2>Round Three: Qualitative Data</h2>
+  ${pdfSources('r3')}
+  <div class="field"><div class="label">Other Sources Considered / Why These Won</div><div class="value">${filled(val('r3-other'), 'Not completed')}</div></div>
+
+  <div class="footer">TGE 1150 &middot; College of Technology, Idaho State University &middot; Instructor: Phil Jones</div>
+</body></html>`;
+    w.document.write(doc);
+    w.document.close();
+  }
+
+  function generateJSON() {
+    const data = {
+      exportType: "TGE 1150 Week 2 Gathering Workbook Progress Save",
+      savedAt: new Date().toISOString(),
+      textFields: {}
+    };
+    allFieldIds.concat(extraIds()).forEach(id => { data.textFields[id] = document.getElementById(id).value; });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Week2_Research_Gathering_Progress.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function loadJSON(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (data.textFields) {
+          Object.keys(data.textFields).forEach(id => {
+            const mm = id.match(/^(r[123])-s(\d+)-/);
+            if (mm) { while (sourceTotal(mm[1]) < Math.min(+mm[2], MAX_SOURCES)) addSource(mm[1]); }
+          });
+          Object.keys(data.textFields).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = data.textFields[id];
+          });
+        }
+        updateCards();
+        updateSummary();
+        alert('Progress loaded. Pick up where you left off.');
+      } catch (err) {
+        alert('That file could not be read. Make sure you selected a Week 2 progress save file.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // Page-by-page navigation
+  const screenTitles = [
+    'Read First',
+    'Step 1: Lock In Your Target',
+    'Step 2: Build Your Theoretical Framework',
+    'Step 3, Round One: Documenting the Problem',
+    'Step 4, Round Two: Quantitative Data',
+    'Step 5, Round Three: Qualitative Data',
+    'Final: Your Summary'
+  ];
+  let currentScreen = 0;
+
+  function buildDots() {
+    const wrap = document.getElementById('progress-dots');
+    wrap.innerHTML = '';
+    screenTitles.forEach((t, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'progress-dot';
+      dot.title = t;
+      dot.addEventListener('click', () => goTo(i));
+      wrap.appendChild(dot);
+    });
+  }
+
+  function goTo(index) {
+    if (index < 0 || index >= screenTitles.length) return;
+    if (ENFORCE_MIN && index > currentScreen) {
+      for (let sc = Math.max(currentScreen, 3); sc < Math.min(index, 6); sc++) {
+        if (sourceCount(['r1','r2','r3'][sc - 3]) < 2) { index = sc; break; }
+      }
+    }
+    document.getElementById('screen-' + currentScreen).classList.remove('active');
+    document.getElementById('screen-' + index).classList.add('active');
+    currentScreen = index;
+
+    document.getElementById('progress-current').textContent = index + 1;
+    document.getElementById('progress-title').textContent = screenTitles[index];
+
+    const dots = document.querySelectorAll('.progress-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.remove('done', 'current');
+      if (i < index) dot.classList.add('done');
+      if (i === index) dot.classList.add('current');
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  buildDots();
+  document.getElementById('progress-total').textContent = screenTitles.length;
+  goTo(0);
+
+  updateCards();
+  updateSummary();
+</script>
+</body>
+</html>
