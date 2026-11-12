@@ -250,9 +250,18 @@
           <label for="fw-name">The name of the concept or pattern you found</label>
           <input type="text" id="fw-name" placeholder="e.g. Theory of Constraints">
 
-          <label for="fw-source">Where this concept comes from</label>
-          <p class="step-prompt" style="margin-top:-4px;">Name the researcher, field, textbook, or course material it traces back to. If you found it online, paste the link. Pick a source your supervisor would trust. Make sure you can explain what the source says and why you trust who wrote it. Not sure where to start? Follow the 7-step "How to find your framework" roadmap in Section D, "Name the concept," of your Interactive Reading or Reading Only. Quick links: <a href="https://isu.libguides.com/informationliteracy/findarticles" target="_blank" rel="noopener">ISU Library: Find Articles</a> | <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>.</p>
-          <input type="text" id="fw-source" placeholder="e.g. Eliyahu Goldratt's book The Goal, or a link to where you found it">
+          <label for="fw-source">The source of this concept (title and author or publisher)</label>
+          <p class="step-prompt" style="margin-top:-4px;">Name the researcher, field, textbook, or course material it traces back to, then fill in the link, where you found it, and what kind of source it is below. Pick a source your supervisor would trust. Make sure you can explain what the source says and why you trust who wrote it. Not sure where to start? Follow the 7-step "How to find your framework" roadmap in Section D, "Name the concept," of your Interactive Reading or Reading Only. Quick links: <a href="https://isu.libguides.com/informationliteracy/findarticles" target="_blank" rel="noopener">ISU Library: Find Articles</a> | <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>.</p>
+          <input type="text" id="fw-source" placeholder="e.g. Eliyahu Goldratt, The Goal (book)">
+
+          <label for="fw-link">Link</label>
+          <input type="text" id="fw-link" placeholder="https://... (or write 'no link' if it is a printed book)">
+
+          <label for="fw-found">Where you found it</label>
+          <textarea id="fw-found" placeholder="e.g. Searched 'theory of constraints bottleneck' in the ISU Library and followed a result to a summary of the book."></textarea>
+
+          <label for="fw-kind">What kind of source it is</label>
+          <textarea id="fw-kind" placeholder="e.g. Textbook, journal article, trade publication, or course reading."></textarea>
 
           <label for="fw-why">Why this concept fits your case</label>
           <textarea id="fw-why" placeholder="e.g. Our one rack is the slowest step. Every job has to pass through it, so the whole shop can only finish as many alignments as the rack allows."></textarea>
@@ -449,7 +458,7 @@
           <div class="card-label">Why It Fits</div>
           <div class="card-value" id="fw-why-card"><span class="card-empty">not yet written</span></div>
         </div>
-        <div class="card-progress" id="fw-progress">0 / 5 fields complete</div>
+        <div class="card-progress" id="fw-progress">0 / 8 fields complete</div>
       </div>
 
       <div class="rs-card small">
@@ -567,7 +576,7 @@
 
   const allFieldIds = [
     'target-ask','target-problem',
-    'fw-work-change','fw-equip-same','fw-timing','fw-inevitable','fw-name','fw-source','fw-why','fw-alt','fw-disprove',
+    'fw-work-change','fw-equip-same','fw-timing','fw-inevitable','fw-name','fw-source','fw-link','fw-found','fw-kind','fw-why','fw-alt','fw-disprove',
     'r1-s1-title','r1-s1-link','r1-s1-found','r1-s1-kind','r1-s2-title','r1-s2-link','r1-s2-found','r1-s2-kind','r1-other',
     'r2-s1-title','r2-s1-link','r2-s1-found','r2-s1-kind','r2-s2-title','r2-s2-link','r2-s2-found','r2-s2-kind','r2-other',
     'r3-s1-title','r3-s1-link','r3-s1-found','r3-s1-kind','r3-s2-title','r3-s2-link','r3-s2-found','r3-s2-kind','r3-other'
@@ -593,8 +602,8 @@
     document.getElementById('fw-why-card').innerHTML = val('fw-why') ? truncate(val('fw-why'), 80) : '<span class="card-empty">not yet written</span>';
 
     let fwComplete = 0;
-    ['fw-name','fw-source','fw-why','fw-alt','fw-disprove'].forEach(id => { if (val(id)) fwComplete++; });
-    document.getElementById('fw-progress').textContent = fwComplete + ' / 5 fields complete';
+    ['fw-name','fw-source','fw-link','fw-found','fw-kind','fw-why','fw-alt','fw-disprove'].forEach(id => { if (val(id)) fwComplete++; });
+    document.getElementById('fw-progress').textContent = fwComplete + ' / 8 fields complete';
 
     const r1n = sourceCount('r1');
     const r2n = sourceCount('r2');
@@ -661,6 +670,9 @@
   <div class="field"><div class="label">Inevitability</div><div class="value">${filled(val('fw-inevitable'), 'Not completed')}</div></div>
   <div class="field"><div class="label">Framework Name</div><div class="value">${filled(val('fw-name'), 'Not completed')}</div></div>
   <div class="field"><div class="label">Source of This Concept</div><div class="value">${filledLinks(val('fw-source'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Link</div><div class="value">${filledLinks(val('fw-link'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Where It Was Found</div><div class="value">${filled(val('fw-found'), 'Not completed')}</div></div>
+  <div class="field"><div class="label">Kind of Source</div><div class="value">${filled(val('fw-kind'), 'Not completed')}</div></div>
   <div class="field"><div class="label">Why It Fits</div><div class="value">${filled(val('fw-why'), 'Not completed')}</div></div>
   <div class="field"><div class="label">Alternative Reading, and Why It Was Ruled Out</div><div class="value">${filled(val('fw-alt'), 'Not completed')}</div></div>
   <div class="field"><div class="label">What Would Disprove This</div><div class="value">${filled(val('fw-disprove'), 'Not completed')}</div></div>
