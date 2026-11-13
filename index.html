@@ -203,13 +203,13 @@
       <div class="step">
         <div class="step-head"><span class="step-num">STEP 1</span><h2>Lock In Your Target</h2></div>
       <div class="mynotes"><b>Your notes:</b> Section B, "Lock in your target," in your Week 2 Interactive Reading PDF (the part that says "Worksheet notes"). Or find the same section in the Reading Only. Your ask and your problem come from your Week 1 Profile, Step 3 (the problem box and the ask box). Your problem and its incident are the start of your case. The proof you listed in your Section A notes is what the rest of this worksheet goes out to find.</div>
-        <p class="step-prompt">Everything below builds on the problem and the ask you already nailed down in Week 1. Pull those two pieces over here so this worksheet has something to build on. <b>Be specific.</b> Name the exact item, the price, and the number from your incident.</p><details class="dani-ex" open><summary>Dani's example for this step</summary><div class="dx-body"><p><b>Your one-sentence ask:</b> Ray, please approve a second two-post lift for the shop, about $5,300.</p><p><b>Your problem, with the incident that proves it:</b> Winter tire season doubles our work, and our one 15-year-old lift takes about 50 minutes per job. Last winter we were backed up almost every Saturday from October to January.</p></div><div class="dx-note">Use this as a model for your own boxes. Write about your own situation, not Dani's.</div></details>
+        <p class="step-prompt">Everything below builds on the problem and the ask you already nailed down in Week 1. Open your Week 1 Word doc and copy those two pieces over here so this worksheet has something to build on. <b>Be specific.</b> Name the exact item, the price, and the number from your incident.</p><details class="dani-ex" open><summary>Dani's example for this step</summary><div class="dx-body"><p><b>Your one-sentence ask:</b> I am asking you to approve buying a second lift, around $5,300, so the shop is never down to one lift.</p><p><b>Your problem, with the incident that proves it:</b> Last Tuesday our only lift was down for six hours for a hydraulic fix. We turned away four jobs. At about $160 each, that is roughly $640 gone in one day.</p></div><div class="dx-note">Use this as a model for your own boxes. Write about your own situation, not Dani's.</div></details>
 
         <label for="target-ask">Your one-sentence ask, from Week 1</label>
-        <textarea id="target-ask" style="min-height:60px;" placeholder="e.g. Ray, please approve a second two-post lift for the shop, about $5,300."></textarea>
+        <textarea id="target-ask" style="min-height:60px;" placeholder="e.g. I am asking you to approve buying a second lift, around $5,300, so the shop is never down to one lift."></textarea>
 
         <label for="target-problem">Your problem, with the incident that proves it, from Week 1 (real if you work in your industry, realistic if you do not)</label>
-        <textarea id="target-problem" placeholder="e.g. Winter tire season doubles our work, and our one 15-year-old lift takes about 50 minutes per job. Last winter we were backed up almost every Saturday from October to January."></textarea>
+        <textarea id="target-problem" placeholder="e.g. Last Tuesday our only lift was down for six hours for a hydraulic fix. We turned away four jobs. At about $160 each, that is roughly $640 gone in one day."></textarea>
 
         <div class="callout"><b>Why this step exists:</b> Everything you gather from here forward has to actually serve this specific ask. If you can't see how a source connects back to what's written here, it doesn't belong in your research.</div>
       </div>
@@ -615,7 +615,7 @@
     document.getElementById('r3-count').textContent = r3n + (r3n === 1 ? ' source' : ' sources') + ' (2 minimum)';
 
     document.getElementById('pin-fw-name').textContent = fwName ? truncate(fwName, 22) : 'Not named yet';
-    document.getElementById('pin-sources').textContent = (r1n + r2n + r3n) + ' sources (6 minimum)';
+    document.getElementById('pin-sources').textContent = (r1n + r2n + r3n) + ' sources (6 minimum, plus your concept source)';
     updateSourceUI();
   }
 
